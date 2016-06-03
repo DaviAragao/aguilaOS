@@ -1,7 +1,7 @@
 # Compilador C
 CC=gcc
 # Aqui sao nossas regras de compilacao de todos os arquivos .CPP do ErdOS
-CFLAGS=-Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fpermissive -m32 -c
+CFLAGS=-Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -m32 -c
 
 # Montador Asssembly
 AS=nasm
@@ -23,15 +23,16 @@ compilar:
 	
 	@echo "Compilando 'libc' especifica..."
 	$(CC) $(CFLAGS) libc/io.c
+	$(CC) $(CFLAGS) libc/string.c
 	
 	@echo "Compilando principal (main.c)..."
 	$(CC) $(CFLAGS) main.c
 	
 	@echo "Movendo objetos..."
-	mv -v start.o io.o main.o obj/
+	mv -v start.o io.o string.o main.o obj/
 	
 	@echo "Linkando Kernel em bin/..."
-	$(LD) $(LDFLAGS) -o bin/kernel.bin obj/start.o obj/main.o obj/io.o
+	$(LD) $(LDFLAGS) -o bin/kernel.bin obj/start.o obj/main.o obj/io.o obj/string.o
 	
 
 gerar_disco_grub:
@@ -58,7 +59,7 @@ gerar_disco_grub:
 	@echo "Tudo pronto! Sua imagem de disquete esta em bin/"
 
 gerar_iso:
-	@echo "Gerando ISO"
+	@echo "Gerando ISO..."
 	genisoimage -quiet -V 'AGUILAOS' -input-charset iso8859-1 -o aguilaOS.iso -b aguilaOS.img -hide aguilaOS.img bin/
 
 clean:
