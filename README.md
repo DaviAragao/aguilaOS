@@ -32,4 +32,4 @@ Ao termino, se todo ocorrer bem, será gerado 2 arquivos na pasta bin. O 'aguila
 
 aguilaOS.img é uma imagem de disquete com seu kernel construido amarrado ao GRUB. Você pode gravar a um disquete físico ou testar com o QEMU
 
- # qemu-system-i386 -fda bin/aguilaOS.img
+ qemu-system-i386 -fda bin/aguilaOS.img
