@@ -3,12 +3,12 @@ AguilaOS
 AguilaOS é um protótipo de um sistema operacional desenvolvido em C com o objetivo de auxiliar no estudo de sistemas operacionais.
 
 ===
-Usando o sistema:
+### Usando o sistema:
 
 Para usar AguilaOS basta fazer o download do arquivo aguilaOS.iso e usá-lo na sua máquina virtual ou então copiá-lo para um CD físico e iniciar a sua máquina pelo CD.
 
 ===
-Compilando o sistema:
+### Compilando o sistema:
 
 Em ambiente linux você irá precisar das seguintes ferramentas instaladas para conseguir baixar e compilar o AguilaOS.
 
