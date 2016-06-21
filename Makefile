@@ -11,7 +11,7 @@ ASFLAGS=-f elf32 -o
 # Linker
 LD=ld
 # Regras do vinculador
-LDFLAGS=-m elf_i386 -T link.ld
+LDFLAGS=-m elf_i386 -T arch/x86/boot/link.ld
 
 all: clean compilar gerar_disco_grub gerar_iso
 
@@ -19,7 +19,7 @@ compilar:
 	mkdir -p bin/ obj/
 	
 	@echo "Montando assembly do lancador (start.asm)..."
-	$(AS) $(ASFLAGS) start.o boot/start.asm
+	$(AS) $(ASFLAGS) start.o arch/x86/boot/start.asm
 	
 	@echo "Compilando 'lib' especifica..."
 	$(CC) $(CFLAGS) lib/io.c
