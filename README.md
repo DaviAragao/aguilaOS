@@ -2,11 +2,13 @@ AguilaOS
 =====
 AguilaOS é um protótipo de um sistema operacional desenvolvido em C com o objetivo de auxiliar no estudo de sistemas operacionais.
 
+===
 ---
 Usando o sistema:
 
 Para usar AguilaOS basta fazer o download do arquivo aguilaOS.iso e usá-lo na sua máquina virtual ou então copiá-lo para um CD físico e iniciar a sua máquina pelo CD.
 
+===
 ---
 Compilando o sistema:
 
@@ -44,11 +46,17 @@ O projeto está dividido da seguinte forma:
 aguilaOS
 |
 |--arch (Código dependente da arquitetura).
+|
 |--bin (Diretório em que ficarão aguilaOS.img e kernel.bin após a compilação).
+|
 |--grub (Imagem do GRUB)
+|
 |--include (Arquivos de cabeçalhos do kernel)
+|
 |--kernel (Código principal do sistema operacional)
+|
 |--lib (Biblioteca com funções auxiliares)
+|
 |--obj (Pasta usada em tempo de compilação)
 
 AguilaOS foi desenvolvido para você testar, modificar, recompilar e melhorar. Portanto não sinta-se intimidado, aguardamos ansiosamente para ver as melhorias que você fará.
