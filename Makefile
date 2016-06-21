@@ -1,7 +1,7 @@
 # Compilador C
 CC=gcc
 # Aqui sao nossas regras de compilacao de todos os arquivos .CPP do ErdOS
-CFLAGS=-Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -m32 -c
+CFLAGS=-I include/ -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -m32 -c
 
 # Montador Asssembly
 AS=nasm
@@ -19,14 +19,14 @@ compilar:
 	mkdir -p bin/ obj/
 	
 	@echo "Montando assembly do lancador (start.asm)..."
-	$(AS) $(ASFLAGS) start.o start.asm
+	$(AS) $(ASFLAGS) start.o boot/start.asm
 	
-	@echo "Compilando 'libc' especifica..."
-	$(CC) $(CFLAGS) libc/io.c
-	$(CC) $(CFLAGS) libc/string.c
+	@echo "Compilando 'lib' especifica..."
+	$(CC) $(CFLAGS) lib/io.c
+	$(CC) $(CFLAGS) lib/string.c
 	
 	@echo "Compilando principal (main.c)..."
-	$(CC) $(CFLAGS) main.c
+	$(CC) $(CFLAGS) kernel/main.c
 	
 	@echo "Movendo objetos..."
 	mv -v start.o io.o string.o main.o obj/
@@ -39,20 +39,19 @@ gerar_disco_grub:
 	@echo "Gerando disco de boot com GRUB..."
 	@echo "Caso ocorra problemas de permissao, rode como root."
 	@echo ""
-	@echo "Copiando boot..."
-	cp boot/grub.img bin/aguilaOS.img
+	cp grub/grub.img bin/aguilaOS.img
 	@echo "Criando ponto de montagem para imagem..."
-	mkdir -p /tmp/ponto_montagem_grub_aguilaOS
+	mkdir -p /tmp/aguilaOS
 	@echo "Montando grub..."
-	mount -t auto bin/aguilaOS.img /tmp/ponto_montagem_grub_aguilaOS/
+	mount -t auto bin/aguilaOS.img /tmp/aguilaOS/
 	@echo "Limpando..."
-	rm -fv /tmp/ponto_montagem_grub_aguilaOS/kernel.bin
+	rm -fv /tmp/aguilaOS/kernel.bin
 	@echo "Copiando kernel para imagem..."
-	cp -v bin/kernel.bin /tmp/ponto_montagem_grub_aguilaOS/
+	cp -v bin/kernel.bin /tmp/aguilaOS/
 	@echo "Desmontando e fixando dados..."
-	umount /tmp/ponto_montagem_grub_aguilaOS/
+	umount /tmp/aguilaOS/
 	@echo "Limpando..."
-	rm -rfv /tmp/ponto_montagem_grub_aguilaOS/
+	rm -rfv /tmp/aguilaOS/
 	@echo ""
 	@echo ""
 	@echo ""
@@ -65,7 +64,7 @@ gerar_iso:
 clean:
 	@echo "Limpando..."
 	rm -fv *.o *.bin
-	rm -fv libc/*.o
+	rm -fv lib/*.o
 	rm -fv obj/*.o
 	rm -fv bin/*.bin
 	rm -fv bin/*.img

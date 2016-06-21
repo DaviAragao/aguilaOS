@@ -1,7 +1,0 @@
-#include "libc/io.h"
-
-int main() 
-{
-	clear();
-	putsk("AguliaOS", 5);
-}
