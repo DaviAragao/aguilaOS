@@ -12,4 +12,5 @@ uint32_t main()
 {
 	clear();
 	kPuts("AguilaOS", 5);
+	return 0;
 }
