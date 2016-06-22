@@ -1,22 +1,30 @@
+/*
+ *	AguilaOS - Sistema operacional para ensino de sistemas operacionais.
+ *	Davi Augusto Aragão.
+ *	GNU GPL.
+ *
+ *	Arquivo: io.c
+ *	Objetivo: Principais funções de escrita na tela(temporário).
+*/
 #include <io.h>
 #include <string.h>
 
 #define BUFFER 0xb8000
 
-int corFonte = 15;
-char* tela = (char*)(BUFFER);
+uint32_t corFonte = 15;
+char8_t* tela = (char8_t*)(BUFFER);
 
-void putsk(char* texto, int cor)
+void kPuts(char8_t* str, uint32_t attr)
 {
-	int i = 0;
-	corFonte = cor;
-	for (i = 0; i < strlenk(texto); i++)
-		putch(texto[i]);
+	uint32_t i = 0;
+	corFonte = attr;
+	for (i = 0; i < kStrlen(str); i++)
+		putch(str[i]);
 }
 
-void putch(char c)
+void putch(char8_t ch)
 {
-	*tela = c;
+	*tela = ch;
 	tela++;
 	*tela = corFonte;
 	tela++;
@@ -24,22 +32,10 @@ void putch(char c)
 
 void clear(void) 
 {
-	char* mem = (char*)(BUFFER);
+	char8_t* mem = (char8_t*)(BUFFER);
 	while(*mem != 0)
 	{
 		*mem = 0;
 		mem++;
 	}
-}
-
-void outportb (unsigned short _port, unsigned char _data)
-{
-	__asm__ __volatile__ ("outb %1, %0" : : "dN" (_port), "a" (_data));
-}
-
-unsigned char inportb (unsigned short _port)
-{
-	unsigned char rv;
-	__asm__ __volatile__ ("inb %1, %0" : "=a" (rv) : "dN" (_port));
-	return rv;
 }
