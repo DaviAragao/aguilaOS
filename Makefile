@@ -1,7 +1,7 @@
 # Compilador C
 CC=gcc
-# Aqui sao nossas regras de compilacao de todos os arquivos .CPP do ErdOS
-CFLAGS=-I include/ -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -m32 -c
+# Aqui sao nossas regras de compilacao de todos os arquivos .C
+CFLAGS=-I include/ arch/include -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -m32 -c
 
 # Montador Asssembly
 AS=nasm
@@ -22,17 +22,20 @@ compilar:
 	$(AS) $(ASFLAGS) start.o arch/x86/boot/start.asm
 	
 	@echo "Compilando 'lib' especifica..."
-	$(CC) $(CFLAGS) lib/io.c
 	$(CC) $(CFLAGS) lib/string.c
+
+	@echo "Compilando código da arquitetura(archMain.c)..."
+	$(CC) $(CFLAGS) arch/x86/io.c
+	$(CC) $(CFLAGS) arch/x86/boot/archMain.c
 	
-	@echo "Compilando principal (main.c)..."
-	$(CC) $(CFLAGS) kernel/main.c
+	@echo "Compilando principal (kernel.c)..."
+	$(CC) $(CFLAGS) kernel/kernel.c
 	
 	@echo "Movendo objetos..."
-	mv -v start.o io.o string.o main.o obj/
+	mv -v start.o io.o string.o archMain.o kernel.o obj/
 	
 	@echo "Linkando Kernel em bin/..."
-	$(LD) $(LDFLAGS) -o bin/kernel.bin obj/start.o obj/main.o obj/io.o obj/string.o
+	$(LD) $(LDFLAGS) -o bin/kernel.bin obj/start.o obj/archMain.o obj/kernel.o obj/io.o obj/string.o
 	
 
 gerar_disco_grub:
