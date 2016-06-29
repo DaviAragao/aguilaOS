@@ -1,0 +1,139 @@
+GDT - Global Descriptor Table(Tabela Global de  Decritores)
+GDTR - Global Descriptor Table Register(Registrador da Tabela Global de Descritores)
+LGDT - Load Global Descriptor Table(Carrega o Registrador da Tabela Global de Descritores)
+
+A arquitetura x86 permite, em seu modo protegido, que a memória seja segmentada em partes de tamanhos variáveis. GDT é a tabela responsável por definir os segmentos e os acessos as regiões da memória. A GDT tem 8 bytes.
+
+A estrutura de uma GDT:
+
+				 Byte superior:
+
+		|31______24|23|22|21|20|19__16|15|14-13|12|11__8|7______0|
+		|	   |  |D |  |A |Limite|  |     |  |	|	 |
+		|Base	   |G |/ |L |V |Segmen|P |DPL  |S |Tipo |Base	 |
+		|31-24	   |  |B |  |L |19-16 |  |     |  |	|16-24	 |
+		|----------|--|--|--|--|------|--|-----|--|-----|--------|
+
+				 Byte inferior:
+
+		|31_________________________16|15_______________________0|
+		|			      |				 |
+		|Endereço Base		      |Limite do Segmento	 |
+		|15-0			      |15-0			 |
+		|-----------------------------|--------------------------|
+
+Legenda:
+	Limite do Segmento-> Determina o tamanho do segmento. O processador junta os 16 bits inferiores com os 4 superiores e trabalha com limite de forma unificada. Caso o bit G, Granulidade, seja 0 o segmento pode variar de 1 Byte até 1 MByte em incrementos de bytes. Caso a Granulidade seja 1 o segmento varia de 4 Kbytes a 4 Gbytes em incrementos de 4Kb.
+
+	Endereço Base-> Essa informação diz ao processador onde deve começar o segmento, o Limite é o tamanho e a Base é a partir de onde. O processador junta todos os campos de Base totalizando 32 bits.
+
+	S->Determina se o descritor é de sistema, 0, ou de código/dados, 1.
+
+	Tipo->Os quatro bits de tipo determinam os privilégios do segmento descrito pela tabela. Caso S seja 1 o segmento refere-se a código ou dados. O bit 11 informa se o segmento trata-se de dados, 0, ou código, 1. Os três bits mais baixos determinam o restante.
+		Tabela de privilégios:
+
+			+---------------------------------------------------------------+
+			|Decimal|11|10|	9| 8|	Tipo|	Descrição		   	|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|0	|0 |0 |0 |0 |	Dado|Leitura 			   	|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|1	|0 |0 |0 |1 |	Dado|Leitura, acessado		   	|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|2	|0 |0 |1 |0 |	Dado|Leitura e escrita		   	|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|3	|0 |0 |1 |1 |	Dado|Leitura e escrita, acessado   	|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|4	|0 |1 |0 |0 |	Dado|Leitura, expande		   	|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|5	|0 |1 |0 |1 |	Dado|Leitura, expande, acessado	   	|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|6	|0 |1 |1 |0 |	Dado|Leitura e escrita, expande	   	|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|7	|0 |1 |1 |1 |	Dado|Leitura e escrita, expande, acess.	|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|8	|1 |0 |0 |0 | Código|Execução				|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|9	|1 |0 |0 |1 | Código|Execução, acessado			|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|10	|1 |0 |1 |0 | Código|Execução e leitura			|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|11	|1 |0 |1 |1 | Código|Execução e leitura, acessado	|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|12	|1 |1 |0 |0 | Código|Execução, transfere		|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|13	|1 |1 |0 |1 | Código|Execução, transfere, acessado	|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|14	|1 |1 |1 |0 | Código|Execução e leitura, transfere	|
+			|-------|--|--|--|--|-------|-----------------------------------|
+			|15	|1 |1 |1 |1 | Código|Execução e leitura, transfere, aces|
+			+---------------------------------------------------------------+
+
+
+	DPL->Privilégio do segmento, Ring ou anel em que ele trabalha. Varia de 0 - 3. Os sistemas operacionais usam somente os níveis 0 para os segmentos do kernel e 3 para os segmentos do usuário.
+
+		Níveis de privilégio:
+			+---------------------------------------------------------
+			|	Programas de usuário - 3	
+			|	+---------------------------------------------
+			|	|	Bibliotecas compartilhadas - 2
+			|	|	+--------------------------------
+			|	|	|	Drivers - 1
+			|	|	|	+--------------------
+			|	|	|	|	Kernel - 0
+			|	|	|	|
+
+
+	AVL->Disponível para o uso do sistema operacional.
+
+	L->Usado somente em 64 bits.
+
+	P->Presente? Este bit indica se o segmento está ou não na memória.
+
+	D/B->Indica o tamanho padrão da operação. 0 = 16 bits e 1 = 32 bits.
+
+
+Os sistemas operacionais modernos usam mecanismos de paginação de memória, portanto a GDT é configurada de forma a caracterizar o modelo plano de memória. Nos sistemas operacionais modernos não é a GDT que determina os segmentos e os acessos à memória, a GDT serve para configurar a memória de uma forma que o sistema de paginamento consiga lê-lá e configurá-la. Para tanto configuram a memória com 4 segmentos de 4Gb, todos de 0Gb a 4Gb, dois com nível de permissão 0 para o kernel e dois com o nível de permissão 3 para o usuário. 
+
+	Segmentação da memória:
+	
+			  		Segmento de código do usuário
+	      |-----------------------------------------------------------------------------|
+
+			  		Segmento de dados do usuário
+	      |-----------------------------------------------------------------------------|
+
+			  		Segmento de código do Kernel
+	      |-----------------------------------------------------------------------------|
+
+			  		Segmento de dados do Kernel
+	      |-----------------------------------------------------------------------------|
+				    		Memória
+		0Gb									4Gb
+		+-------------------------------------------------------------------------+
+		|									  |
+		|									  |
+		|									  |
+		|									  |
+		|									  |
+		+-------------------------------------------------------------------------+
+
+
+A GDT precisa obrigatóriamente que o primeiro segmento seja nulo, todos os valores zerados. A GDT deve ser carregada e atribuída na inicialização do sistema.
+Durante a inicialização do sistema um ponteiro da tabela precisa ser carregado para o registrador GDTR com a instrução assembly lgdt.
+
+	GDTR - Registrador da Tabela Global de Descritores:
+
+		+----------+
+		|Limite	   |
+		|16 bits   |
+		+------------------------+
+		|Endereço de Base da GDT |
+		|32 bits		 |--------------------------------------------> GDT
+		+------------------------+
+
+	Legenda:
+		Limite->Tamanho total da GDT em bytes com todas as entradas -1.
+		Endereço de Base da GDT->Endereço de memória onde está alocada a GDT.
+
+
+Para mais detalhes de implementação veja os arquivos arch/include/x86/gdt.h e arch/x86/gdt.c.
