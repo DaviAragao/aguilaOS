@@ -6,7 +6,7 @@
  *	Arquivo: video.c
  *	Objetivo: Prover algumas funções para manipulação da memória de vídeo. Um pequeno driver de vídeo.
 */
-#include <video.h>
+#include <x86/video.h>
 #include <string.h>
 
 uint32_t corFonte = BRANCO;

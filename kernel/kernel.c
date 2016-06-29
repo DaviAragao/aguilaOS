@@ -6,7 +6,7 @@
  *	Arquivo: main.c
  *	Objetivo: Acordar e levantar os principais sistema do kernel.
 */
-#include <video.h>
+#include <x86/video.h>
 #include <kernel.h>
 
 void kernelMain() 
