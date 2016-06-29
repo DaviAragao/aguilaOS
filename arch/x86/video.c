@@ -4,14 +4,12 @@
  *	GNU GPL.
  *
  *	Arquivo: video.c
- *	Objetivo: Prover algumas funções para manipulação da memória de vídeo. Um pequeno driver.
+ *	Objetivo: Prover algumas funções para manipulação da memória de vídeo. Um pequeno driver de vídeo.
 */
 #include <video.h>
 #include <string.h>
 
-#define BUFFER 0xb8000
-
-uint32_t corFonte = 15;
+uint32_t corFonte = BRANCO;
 char8_t* tela = (char8_t*)(BUFFER);
 
 void kPuts(char8_t* str, uint32_t attr)

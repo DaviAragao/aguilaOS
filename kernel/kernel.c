@@ -6,12 +6,12 @@
  *	Arquivo: main.c
  *	Objetivo: Acordar e levantar os principais sistema do kernel.
 */
-#include <io.h>
+#include <video.h>
 #include <kernel.h>
 
 void kernelMain() 
 {
 	clear();
-	kPuts("AguilaOS", 5);
+	kPuts("AguilaOS", CINZA_CLARO);
 	while (1);
 }

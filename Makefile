@@ -1,7 +1,7 @@
 # Compilador C
 CC=gcc
 # Aqui sao nossas regras de compilacao de todos os arquivos .C
-CFLAGS=-I include/ arch/include -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -m32 -c
+CFLAGS=-Iinclude -Iarch/include -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -m32 -c
 
 # Montador Asssembly
 AS=nasm
@@ -26,16 +26,17 @@ compilar:
 
 	@echo "Compilando código da arquitetura(archMain.c)..."
 	$(CC) $(CFLAGS) arch/x86/io.c
+	$(CC) $(CFLAGS) arch/x86/video.c
 	$(CC) $(CFLAGS) arch/x86/boot/archMain.c
 	
 	@echo "Compilando principal (kernel.c)..."
 	$(CC) $(CFLAGS) kernel/kernel.c
 	
 	@echo "Movendo objetos..."
-	mv -v start.o io.o string.o archMain.o kernel.o obj/
+	mv -v start.o io.o string.o video.o archMain.o kernel.o obj/
 	
 	@echo "Linkando Kernel em bin/..."
-	$(LD) $(LDFLAGS) -o bin/kernel.bin obj/start.o obj/archMain.o obj/kernel.o obj/io.o obj/string.o
+	$(LD) $(LDFLAGS) -o bin/kernel.bin obj/start.o obj/kernel.o obj/archMain.o obj/video.o obj/io.o obj/string.o
 	
 
 gerar_disco_grub:
@@ -46,15 +47,15 @@ gerar_disco_grub:
 	@echo "Criando ponto de montagem para imagem..."
 	mkdir -p /tmp/aguilaOS
 	@echo "Montando grub..."
-	mount -t auto bin/aguilaOS.img /tmp/aguilaOS/
+	sudo mount -t auto bin/aguilaOS.img /tmp/aguilaOS/
 	@echo "Limpando..."
-	rm -fv /tmp/aguilaOS/kernel.bin
+	sudo rm -fv /tmp/aguilaOS/kernel.bin
 	@echo "Copiando kernel para imagem..."
-	cp -v bin/kernel.bin /tmp/aguilaOS/
+	sudo cp -v bin/kernel.bin /tmp/aguilaOS/
 	@echo "Desmontando e fixando dados..."
-	umount /tmp/aguilaOS/
+	sudo umount /tmp/aguilaOS/
 	@echo "Limpando..."
-	rm -rfv /tmp/aguilaOS/
+	sudo rm -rfv /tmp/aguilaOS/
 	@echo ""
 	@echo ""
 	@echo ""
