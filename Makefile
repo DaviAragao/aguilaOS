@@ -25,18 +25,19 @@ compilar:
 	$(CC) $(CFLAGS) lib/string.c
 
 	@echo "Compilando código da arquitetura(archMain.c)..."
-	$(CC) $(CFLAGS) arch/x86/io.c
+#	$(CC) $(CFLAGS) arch/x86/io.c
 	$(CC) $(CFLAGS) arch/x86/video.c
+	$(CC) $(CFLAGS) arch/x86/gdt.c
 	$(CC) $(CFLAGS) arch/x86/boot/archMain.c
 	
 	@echo "Compilando principal (kernel.c)..."
 	$(CC) $(CFLAGS) kernel/kernel.c
 	
 	@echo "Movendo objetos..."
-	mv -v start.o io.o string.o video.o archMain.o kernel.o obj/
+	mv -v start.o string.o video.o gdt.o archMain.o kernel.o obj/
 	
 	@echo "Linkando Kernel em bin/..."
-	$(LD) $(LDFLAGS) -o bin/kernel.bin obj/start.o obj/kernel.o obj/archMain.o obj/video.o obj/io.o obj/string.o
+	$(LD) $(LDFLAGS) -o bin/kernel.bin obj/start.o obj/kernel.o obj/archMain.o obj/gdt.o obj/video.o obj/string.o
 	
 
 gerar_disco_grub:

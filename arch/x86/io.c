@@ -8,7 +8,7 @@
 */
 #include <x86/io.h>
 
-inline void outb(uint16_t port, uchar8_t val)
+/*inline void outb(uint16_t port, uchar8_t val)
 {
     asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
 }
@@ -28,4 +28,4 @@ inline void sti(void)
 inline void cli(void)
 {
 	asm volatile("cli");
-}
+}*/
