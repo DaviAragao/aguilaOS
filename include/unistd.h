@@ -10,6 +10,7 @@
 
 	#define UNISTD_H
 	#include <config.h>
+	#define NULL (void*)0
 	#ifdef ARCH_X86
 		/*caracteres*/
 		typedef char char8_t;

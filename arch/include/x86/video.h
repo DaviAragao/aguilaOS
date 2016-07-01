@@ -30,8 +30,10 @@
         #define AMARELO		0x0E
         #define BRANCO		0x0F
 
- void kPuts(char8_t* str, uint32_t attr);
- void putch(char8_t ch);
- void clear(void);
+	void kPuts(char8_t* str, uint32_t attr);
+	void printk(char8_t* str);
+	void putch(char8_t ch);
+	void print_mem(char8_t* start, char8_t* end);
+	void clear(void);
 
 #endif

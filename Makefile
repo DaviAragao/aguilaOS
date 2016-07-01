@@ -30,14 +30,17 @@ compilar:
 	$(CC) $(CFLAGS) arch/x86/gdt.c
 	$(CC) $(CFLAGS) arch/x86/boot/archMain.c
 	
+	@echo "Compilando testes(test/test.c)..."
+	$(CC) $(CFLAGS) test/test.c
+
 	@echo "Compilando principal (kernel.c)..."
 	$(CC) $(CFLAGS) kernel/kernel.c
 	
 	@echo "Movendo objetos..."
-	mv -v start.o string.o video.o gdt.o archMain.o kernel.o obj/
+	mv -v start.o string.o video.o gdt.o test.o archMain.o kernel.o obj/
 	
 	@echo "Linkando Kernel em bin/..."
-	$(LD) $(LDFLAGS) -o bin/kernel.bin obj/start.o obj/kernel.o obj/archMain.o obj/gdt.o obj/video.o obj/string.o
+	$(LD) $(LDFLAGS) -o bin/kernel.bin obj/start.o obj/kernel.o obj/archMain.o obj/test.o obj/gdt.o obj/video.o obj/string.o
 	
 
 gerar_disco_grub:

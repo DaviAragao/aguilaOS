@@ -141,4 +141,14 @@
 	 * */
 	inline void install_gdt(void);
 
+	/*
+	 * Retorna um ponteiro para a GDT.
+	 * */
+	void* get_gdt(void);
+
+	/*
+	 * Retorna um ponteiro para o GDTR.
+	 * */
+	void* get_gdtr(void);
+
 #endif

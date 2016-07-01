@@ -8,15 +8,11 @@
 */
 #include <kernel.h>
 #include <x86/gdt.h>
+#include <test.h>
 
 void archMain()
 {
 	setup_gdt();
-	test_gdt();
+	testMain();
 	kernelMain();
-}
-
-void test_gdt()
-{
-	
 }

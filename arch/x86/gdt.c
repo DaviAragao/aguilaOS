@@ -52,12 +52,28 @@ gdtr gdtptr;
  * */
 
 /*
+ * Retorna o ponteiro da GDTR.
+ * */
+void* get_gdtr(void)
+{
+	return &gdtptr;
+}
+
+/*
+ * Retorna o ponteiro da GDT.
+ * */
+void* get_gdt(void)
+{
+	return gdt;
+}
+
+/*
  * O setup_gdt prepara e instala a GDT.
  * */
 void setup_gdt(void)
 {
 	prepare_gdt();
-	install_gdt();
+//	install_gdt();
 }
 
 /*
