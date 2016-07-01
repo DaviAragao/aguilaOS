@@ -13,6 +13,7 @@
 void archMain()
 {
 	setup_gdt();
+	clear();
 	testMain();
 	kernelMain();
 }

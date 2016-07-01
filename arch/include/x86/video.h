@@ -33,7 +33,9 @@
 	void kPuts(char8_t* str, uint32_t attr);
 	void printk(char8_t* str);
 	void putch(char8_t ch);
-	void print_mem(char8_t* start, char8_t* end);
+//	void print_mem(char8_t* start, char8_t* end);
+	void print_mem(void* start, void* end);
 	void clear(void);
+	void gotoxy(uchar8_t x, uchar8_t y);
 
 #endif

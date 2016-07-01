@@ -25,16 +25,16 @@ void testGDT(void* gdt, void* gdtr)
 	 * Verifica se a GDT existe.
 	 * */
 	if(!gdt || !gdtr)
-		printk("******* GDT ou GDTR não inicializadas *******");
-	else if(gdtr->base_address != *gdt)
-		printk("******** O endereço em GDTR não é o endereço da GDT ********");
+		printk("******* GDT ou GDTR não inicializadas *******\n");
+/*	else if(gdtr->gdtptr.base_address != gdt)
+		printk("******** O endereço em GDTR não é o endereço da GDT ********");*/
 
 	/*
 	 * Exibe as entradas da tabela GDT.
 	 * */
-	for (i = 0; i < GDT_SIZE; i++)
+	for (i = 0; i <= GDT_SIZE; i++)
 	{
-		printk("******* Segmento da GDT ********");
+		printk("******* Segmento da GDT ********\n");
 		print_mem(aux, aux + 64);
 		aux += 64;
 	}

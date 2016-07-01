@@ -11,6 +11,8 @@
 
 uint32_t corFonte = BRANCO;
 char8_t* tela = (char8_t*)(BUFFER);
+uchar8_t px = 0;
+uchar8_t py = 0;
 
 void printk(char8_t* str)
 {
@@ -29,35 +31,48 @@ void kPuts(char8_t* str, uint32_t attr)
 
 void putch(char8_t ch)
 {
-	*tela = ch;
-	tela++;
-	*tela = corFonte;
-	tela++;
+	if(ch == '\n')
+		tela += 80;
+	else
+	{
+		*tela = ch;
+		tela++;
+		*tela = corFonte;
+		tela++;
+	}
 }
 
-void print_mem(char8_t* start, char8_t* end)
+void print_mem(void* start, void* end)
 {
-	uint16_t count = 0;
-	while(start != end)
+	uchar8_t* pstart = (uchar8_t*) start;
+	uchar8_t* pend = (uchar8_t*) end;
+	uint32_t count = 0;
+
+	while(pstart != pend)
 	{
-		*tela = *start++;
-		*tela++;
-		if (count == 7) 
+		count++;
+		if(count >= 7)
 		{
-			*tela = corFonte;
-			tela++;
+			*tela++ = BRANCO;
 			count = 0;
 		}
-		count++;
+		else
+			*tela++ = *pstart++;
 	}
 }
 
 void clear(void) 
 {
-	char8_t* mem = (char8_t*)(BUFFER);
-	while(*mem != 0)
+	uint32_t i;
+	for (i = 0; i < (80 * 25) * 2; i += 2) 
 	{
-		*mem = 0;
-		mem++;
+		tela[i] = ' ';
+		tela[i + 1] = PRETO;
 	}
+}
+
+void gotoxy(uchar8_t x, uchar8_t y)
+{
+	px = x;
+	py = y;
 }
