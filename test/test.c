@@ -17,31 +17,23 @@ void testMain(void)
 	//testVideo();
 }
 
-void testGDT(void* gdt, void* gdtr)
+void testGDT(void* gdt, void* pgdtr)
 {
-	uint32_t i;
-	void* aux = gdt;
+	//uint32_t i;
+	gdtr* gdt_ptr = (gdtr*) pgdtr;
 
 	/*
 	 * Verifica se a GDT existe.
 	 * */
-	if(!gdt || !gdtr)
+	if(!gdt || !gdt_ptr)
 		printk("******* GDT ou GDTR não inicializadas *******\n");
-/*	else if(gdtr->gdtptr.base_address != gdt)
-		printk("******** O endereço em GDTR não é o endereço da GDT ********");*/
-
-	/*
-	 * Exibe as entradas da tabela GDT.
-	 * */
-	for (i = 0; i <= GDT_SIZE; i++)
-	{
-		printk("******* Segmento da GDT ********\n");
-		print_mem(aux, aux + 64);
-		aux += 64;
-		printk("\n");
-	}
+	else if((*gdt_ptr).base_address != gdt)
+		printk("******** O endereço em GDTR não é o endereço da GDT ********\n");
 }
 
+/*
+ * Testa algumas funções do driver de video.
+ * */
 void testVideo(void)
 {
 	uint32_t i;

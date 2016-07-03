@@ -78,19 +78,8 @@ void print_mem(void* start, void* end)
 	uchar8_t* pstart = (uchar8_t*) start;
 	uchar8_t* pend = (uchar8_t*) end;
 
-	uint32_t count = 0;
-
 	while(pstart != pend)
-	{
-		count++;
-		if(count >= 7)
-		{
-			*tela++ = BRANCO;
-			count = 0;
-		}
-		else
-			*tela++ = *pstart++;
-	}
+		printk(pstart++);
 }
 
 void clear(void) 
