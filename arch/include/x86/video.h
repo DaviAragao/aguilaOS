@@ -11,6 +11,9 @@
 
 	#include <unistd.h>
 	#define BUFFER 0xB8000
+	#define COLUNS 80
+	#define LINES 25
+	#define VIDEO_SIZE COLUNS * LINES * 2
 
         /*Cores possíveis*/                                                                                                                       
         #define PRETO		0x00
@@ -33,9 +36,11 @@
 	void kPuts(char8_t* str, uint32_t attr);
 	void printk(char8_t* str);
 	void putch(char8_t ch);
-//	void print_mem(char8_t* start, char8_t* end);
 	void print_mem(void* start, void* end);
 	void clear(void);
 	void gotoxy(uchar8_t x, uchar8_t y);
+	void scroll(void);
+	void clearLastLine(void);
+	void newLine(void);
 
 #endif

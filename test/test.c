@@ -14,6 +14,7 @@
 void testMain(void)
 {
 	testGDT(get_gdt(), get_gdtr());
+	//testVideo();
 }
 
 void testGDT(void* gdt, void* gdtr)
@@ -37,5 +38,16 @@ void testGDT(void* gdt, void* gdtr)
 		printk("******* Segmento da GDT ********\n");
 		print_mem(aux, aux + 64);
 		aux += 64;
+		printk("\n");
 	}
+}
+
+void testVideo(void)
+{
+	uint32_t i;
+	clear();
+	printk("AguilaOS\n");
+	for (i = 0; i < 23; i++)
+		printk("Davi Augusto Aragão\n");
+
 }

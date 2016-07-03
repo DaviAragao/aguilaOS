@@ -18,27 +18,58 @@ void printk(char8_t* str)
 {
 	uint32_t i = 0;
 	for (i = 0; i < kStrlen(str); i++)
-		putch(str[i]);
+	{
+		if (str[i] == '\n')
+			newLine();
+		else
+			putch(str[i]);
+	
+	}
 }
 
 void kPuts(char8_t* str, uint32_t attr)
 {
-	uint32_t i = 0;
 	corFonte = attr;
-	for (i = 0; i < kStrlen(str); i++)
-		putch(str[i]);
+	printk(str);
 }
 
 void putch(char8_t ch)
 {
-	if(ch == '\n')
-		tela += 80;
-	else
+	uint32_t position = ((COLUNS * py) + px) * 2;
+
+	if(px >= COLUNS)
+		newLine();
+	else 
+		px++;
+
+	tela[position] = ch;
+	tela[position + 1] = corFonte;
+}
+
+void newLine(void)
+{
+	px = 0;
+	py++;
+	if (py >= LINES)
+		scroll();
+}
+
+void scroll(void)
+{
+	uint32_t i;
+	for (i = 0; i < VIDEO_SIZE - 160; i++)
+		tela[i] = tela[i + 160];
+	clearLastLine();
+	py--;
+}
+
+void clearLastLine(void)
+{
+	uint32_t i = VIDEO_SIZE - 160;
+	for (i; i < VIDEO_SIZE; i += 2)
 	{
-		*tela = ch;
-		tela++;
-		*tela = corFonte;
-		tela++;
+		tela[i] = ' ';
+		tela[i + 1] = PRETO;
 	}
 }
 
@@ -46,6 +77,7 @@ void print_mem(void* start, void* end)
 {
 	uchar8_t* pstart = (uchar8_t*) start;
 	uchar8_t* pend = (uchar8_t*) end;
+
 	uint32_t count = 0;
 
 	while(pstart != pend)
@@ -64,7 +96,7 @@ void print_mem(void* start, void* end)
 void clear(void) 
 {
 	uint32_t i;
-	for (i = 0; i < (80 * 25) * 2; i += 2) 
+	for (i = 0; i < VIDEO_SIZE; i += 2) 
 	{
 		tela[i] = ' ';
 		tela[i + 1] = PRETO;
