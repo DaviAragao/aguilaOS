@@ -76,7 +76,7 @@
 	 * Segmento de 16bits.
 	 * */
 	#define GDT_DB_16BITS ZERO
-	
+
 	/*
 	 * Segmento de 32bits.
 	 * */
@@ -92,7 +92,7 @@
 	 * */
 	#define KERNEL_CS 0x08
 
-	/* gdt_segment 
+	/* gdt_segment
 	 * Uma entrada na GDT.
 	 * Caso restem dúvidas no conceito implementado de uma olhada no arquivo doc/gdt/gdt.txt
 	 * */
@@ -116,11 +116,11 @@
 		}__attribute__((packed)) hight;
 	}__attribute__((packed)) gdt_t;
 
-	/* 
+	/*
 	 * gdt_register
 	 * A estrutura que será carregada para o registrador do processador. Aponta para a primeira entrada da GDT, o segmento nulo.
 	 * */
-	typedef struct gdt_register 
+	typedef struct gdt_register
 	{
 		uint16_t limit;
 		uint32_t base_address;
@@ -139,7 +139,7 @@
 	/*
 	 * Carrega o ponteiro para a GDT dentro do registrador GDTR.
 	 * */
-	inline void install_gdt(void);
+	extern void install_gdt(void);
 
 	/*
 	 * Retorna um ponteiro para a GDT.

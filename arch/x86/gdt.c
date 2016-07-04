@@ -48,7 +48,7 @@ gdtr gdtptr;
 		|									  |
 		|									  |
 		+-------------------------------------------------------------------------+
- * 
+ *
  * */
 
 /*
@@ -73,7 +73,7 @@ void* get_gdt(void)
 void setup_gdt(void)
 {
 	prepare_gdt();
-//	install_gdt();
+	install_gdt();
 }
 
 /*
@@ -171,25 +171,4 @@ void prepare_gdt(void)
 	 * */
 	gdtptr.limit = (GDT_SIZE * sizeof(gdt_t)) - 1;
 	gdtptr.base_address = gdt;
-}
-
-/*
- * Carrega o ponteiro para a GDT dentro do registrador GDTR.
- * */
-inline void install_gdt(void)
-{
-	asm(	
-		"lgdt %0 \n\t"/* Load Global Descriptor Table */
-		//"reloadData: \n\t"
-		/* Recarrega segmento de dados */
-		"	movw %2, %%ax \n\t"
-		"	movw %%ax, %%ds \n\t"
-		"	movw %%ax, %%es \n\t"
-		"	movw %%ax, %%fs \n\t"
-		"	movw %%ax, %%gs \n\t"
-		"	movw %%ax, %%ss \n\t"
-		/* Recarrega segmento de código */
-		"ljmp %1, $0 \n\t"//$reloadData \n\t"
-		::"m"(gdtptr), "i"(KERNEL_CS), "i"(KERNEL_DS): "eax"
-	);
 }

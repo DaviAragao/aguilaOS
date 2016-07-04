@@ -19,7 +19,6 @@ void testMain(void)
 
 void testGDT(void* gdt, void* pgdtr)
 {
-	//uint32_t i;
 	gdtr* gdt_ptr = (gdtr*) pgdtr;
 
 	/*

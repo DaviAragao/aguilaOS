@@ -73,15 +73,6 @@ void clearLastLine(void)
 	}
 }
 
-void print_mem(void* start, void* end)
-{
-	uchar8_t* pstart = (uchar8_t*) start;
-	uchar8_t* pend = (uchar8_t*) end;
-
-	while(pstart != pend)
-		printk(pstart++);
-}
-
 void clear(void) 
 {
 	uint32_t i;
