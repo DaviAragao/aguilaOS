@@ -36,10 +36,10 @@
 	void kPuts(char8_t* str, uint32_t attr);
 	void printk(char8_t* str);
 	void putch(char8_t ch);
-	void clear(void);
 	void gotoxy(uchar8_t x, uchar8_t y);
 	void scroll(void);
 	void clearLastLine(void);
+	void clear(void);
 	void _clear(uint32_t i);
 	void newLine(void);
 

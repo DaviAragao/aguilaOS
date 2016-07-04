@@ -23,7 +23,6 @@ void printk(char8_t* str)
 			newLine();
 		else
 			putch(str[i]);
-	
 	}
 }
 
