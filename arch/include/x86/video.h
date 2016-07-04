@@ -40,6 +40,7 @@
 	void gotoxy(uchar8_t x, uchar8_t y);
 	void scroll(void);
 	void clearLastLine(void);
+	void _clear(uint32_t i);
 	void newLine(void);
 
 #endif

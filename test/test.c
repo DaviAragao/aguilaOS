@@ -14,7 +14,7 @@
 void testMain(void)
 {
 	testGDT(get_gdt(), get_gdtr());
-	//testVideo();
+//	testVideo();
 }
 
 void testGDT(void* gdt, void* pgdtr)

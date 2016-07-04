@@ -65,21 +65,21 @@ void scroll(void)
 
 void clearLastLine(void)
 {
-	uint32_t i = VIDEO_SIZE - 160;
-	for (i; i < VIDEO_SIZE; i += 2)
-	{
-		tela[i] = ' ';
-		tela[i + 1] = PRETO;
-	}
+	_clear(VIDEO_SIZE - 160);
 }
 
 void clear(void) 
 {
-	uint32_t i;
-	for (i = 0; i < VIDEO_SIZE; i += 2) 
+	_clear(0);
+}
+
+void _clear(uint32_t i)
+{
+	while(i < VIDEO_SIZE)
 	{
 		tela[i] = ' ';
 		tela[i + 1] = PRETO;
+		i += 2; 
 	}
 }
 
