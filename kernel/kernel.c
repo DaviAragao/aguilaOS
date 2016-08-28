@@ -11,7 +11,7 @@
 
 void kernelMain() 
 {
-	//clear();
+	clear();
 	kPuts("AguilaOS\n", CINZA_CLARO);
 	while (1);
 }
